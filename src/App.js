@@ -13,12 +13,13 @@ class App extends Component {
         })
     }
 
+
     render() {
         return (
             <div>
-                FE-nc-messenger
+                FE NC MESSENGER
             </div>
-        );
+        )
     }
 }
 
