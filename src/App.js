@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import {db} from './config';
-import moment from 'moment';
+import * as api from './api';
 
 class App extends Component {
+    
+    componentDidMount () {
+        api.listenForNewMessages(newMessages => {
+            console.log(newMessages);
+        });
+        api.listenToUsers(userEvent => {
+            console.log({userEvent});
+        })
+    }
+
 
     render() {
         return (
