@@ -2,7 +2,7 @@ import {db} from './config';
 
 export function listenForNewMessages (cb) {
     db.collection('messages').onSnapshot(snap => {
-        const newMessages = snap.docChanges.reduce((messages, change) => {
+        const newMessages = snap.docChanges().reduce((messages, change) => {
             if (change.type === 'added') {
                 messages.push(insertIdProperty(change.doc));
             }
@@ -14,7 +14,7 @@ export function listenForNewMessages (cb) {
 
 export function listenToUsers (cb) {
     db.collection('users').onSnapshot(snap => {
-        const userEvent = snap.docChanges.reduce((acc, change) => {
+        const userEvent = snap.docChanges().reduce((acc, change) => {
             const user = insertIdProperty(change.doc);
             delete user.password;
             if (change.type === 'added') {
@@ -33,15 +33,15 @@ export function listenToUsers (cb) {
 
 export function postMessage (message, cb) {
     let errors = []
-    if (!message.text && typeof message.text !== 'string') {
+    if (!message.text || typeof message.text !== 'string') {
         errors.push('You must have a string text property on your message');
     }
-    if (!message.timestamp && typeof message.timestamp !== 'string') {
+    if (!message.timestamp || typeof message.timestamp !== 'string') {
         errors.push('You must have a string timestamp property on your message - use moment().format()');
     }
 
     //**** USE THIS WHILE YOU ARE JUST POSTING MESSAGES, NO USERID ****/
-    if (!message.userId && typeof message.userId !== 'string') {
+    if (!message.userId || typeof message.userId !== 'string') {
         errors.push('You must have a string userId property on your message');
     }
 
@@ -66,10 +66,10 @@ export function postMessage (message, cb) {
 
 export function createUser (user, cb) {
     let errors = [];
-    if (!user.userName && typeof user.userName !== 'string') {
+    if (!user.userName || typeof user.userName !== 'string') {
         errors.push('You must have a string userName on your user')
     }
-    if (!user.password && typeof user.password !== 'string') {
+    if (!user.password || typeof user.password !== 'string') {
         errors.push('You must have a string password on your user')
     }
     if (errors.length) {
@@ -89,10 +89,10 @@ export function createUser (user, cb) {
 
 export function login ({userName, password}, cb) {
     let errors = [];
-    if (!userName && typeof userName !== 'string') {
+    if (!userName || typeof userName !== 'string') {
         errors.push('You must provide a details object with a userName')
     }
-    if (!password && typeof password !== 'string') {
+    if (!password || typeof password !== 'string') {
         errors.push('You must provide a details object with a password')
     }
     if (errors.length) {
@@ -142,7 +142,7 @@ function insertIdProperty (doc) {
     }
 }
 
-function validateUserId (id, cb) {
+function validateUserId (id) {
     if (!id) return new Promise(res => res({
         status : 400,
         msg : 'No user id has been passed in!'
