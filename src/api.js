@@ -2,7 +2,7 @@ import {db} from './config';
 
 export function listenForNewMessages (cb) {
     db.collection('messages').onSnapshot(snap => {
-        const newMessages = snap.docChanges().reduce((messages, change) => {
+        const newMessages = snap.docChanges.reduce((messages, change) => {
             if (change.type === 'added') {
                 messages.push(insertIdProperty(change.doc));
             }
@@ -14,7 +14,7 @@ export function listenForNewMessages (cb) {
 
 export function listenToUsers (cb) {
     db.collection('users').onSnapshot(snap => {
-        const userEvent = snap.docChanges().reduce((acc, change) => {
+        const userEvent = snap.docChanges.reduce((acc, change) => {
             const user = insertIdProperty(change.doc);
             delete user.password;
             if (change.type === 'added') {
