@@ -21,7 +21,7 @@ export function listenToUsers (cb) {
                 if (!acc.msg) acc.msg = 'new users';
                 acc.users = acc.users ? [...acc.users, user] : [user]
             }
-            if (change.type === 'changed') {
+            if (change.type === 'modified') {
                 acc.msg = 'user status change';
                 acc.user = user;
             }
