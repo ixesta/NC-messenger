@@ -34,37 +34,20 @@ export function listenToUsers (cb) {
     })
 }
 
-export function postMessage (message, cb) {
+export const postMessage  = (message, cb) => {
     let errors = []
-    if (!message.text || typeof message.text !== 'string') {
+    if (typeof message.text !== 'string') {
         errors.push('You must have a string text property on your message');
     }
-    if (!message.timestamp || typeof message.timestamp !== 'string') {
+    if (typeof message.timestamp !== 'string') {
         errors.push('You must have a string timestamp property on your message - use moment().format()');
     }
+    return db.collection('messages')
+    .add(message)
+    .then(res => {
+        cb(null, res.id);
+    })
 
-    //**** USE THIS WHILE YOU ARE JUST POSTING MESSAGES, NO USERID ****/
-    if (!message.userId || typeof message.userId !== 'string') {
-        errors.push('You must have a string userId property on your message');
-    }
-
-    //**** REPLACE ABOVE WITH THIS WHEN YOU HAVE ALL IMPLEMENTED USERS TO VALIDATE YOU ARE PASSING IN A CORRECT USERID ****/
-    // validateUserId(message.userId)
-    // .then(response => {
-    //     if (response.status !== 200) {
-    //         errors.push(response.msg);
-    //     }
-    //     if (errors.length) {
-    //         cb({messages : errors})
-    //         return;
-    //     } else {
-            return db.collection('messages')
-            .add(message)
-            .then(res => {
-                cb(null, res.id);
-            })
-    //     }
-    // }) 
 }
 
 export const createUser = (user, cb) => {
@@ -83,57 +66,35 @@ export const createUser = (user, cb) => {
             .then(({_document}) => (
                 _document ? 
                 Promise.reject({messages: ['user exists!']}) :
-                db.collection('users').doc(userName).set(user)
+                db.collection('users').doc(userName).set({...user, loggedIn: true})
                 )
             )
             .then((res) => console.log(res))
             .catch(err => cb(err))
-        // return db.collection('users')
-        // .add({
-        //     ...user,
-        //     loggedIn : true
-        // })
-        // .then(res => {
-        //     cb(null, res.id);
-        // })
     }
 }
 
-export function login ({userName, password}, cb) {
+export const login =  ({userName, password}, cb) => {
     let errors = [];
-    if (!userName || typeof userName !== 'string') {
+    if (typeof userName !== 'string') {
         errors.push('You must provide a details object with a userName')
     }
-    if (!password || typeof password !== 'string') {
+    if (typeof password !== 'string') {
         errors.push('You must provide a details object with a password')
     }
     if (errors.length) {
-        return cb(errors);
+        return cb({messages: errors});
     }
-    return db.collection('users').get()
-    .then(snap => {
-        let userId;
-        snap.forEach(doc => {
-            const user = doc.data();
-            if (
-                user.userName === userName &&
-                user.password === password
-            ) userId = doc.id;
-        })
-        if (userId) {
-            return Promise.all([
-                userId,
-                db.collection('users').doc(userId).update({loggedIn: true})
-            ])
-        } else return [null]
+    return db.collection('users').doc(userName).get()
+    .then(doc => {
+        return !doc.exists ? Promise.reject({messages: 'no such user account'}) : 
+            doc.data().password === password ? 
+                db.collection('users').doc(userName).update({loggedIn : true}) :
+                Promise.reject({messages: 'incorrect password'})
     })
-    .then(([userId]) => {
-        if (userId) {
-            return cb(null, userId)
-        } else {
-            return cb(['No user found with this userName / password combination']);
-        }
-    })
+    .then(() => cb(null, userName))
+    .catch(err => cb(err))
+       
 }
 
 export function logout (id, cb) {
