@@ -1,6 +1,9 @@
 import {db} from './config';
 
-export function listenForNewMessages (cb) {
+
+
+
+export const listenForNewMessages = cb =>  {
     db.collection('messages').onSnapshot(snap => {
         const newMessages = snap.docChanges.reduce((messages, change) => {
             if (change.type === 'added') {
@@ -64,26 +67,35 @@ export function postMessage (message, cb) {
     // }) 
 }
 
-export function createUser (user, cb) {
+export const createUser = (user, cb) => {
+    const {userName, password} = user;
     let errors = [];
-    if (!user.userName || typeof user.userName !== 'string') {
+    if (typeof userName !== 'string') {
         errors.push('You must have a string userName on your user')
     }
-    if (!user.password || typeof user.password !== 'string') {
+    if (typeof password !== 'string') {
         errors.push('You must have a string password on your user')
     }
     if (errors.length) {
         cb({messages : errors})
-        return;
     } else {
-        return db.collection('users')
-        .add({
-            ...user,
-            loggedIn : true
-        })
-        .then(res => {
-            cb(null, res.id);
-        })
+        return db.collection('users').doc(userName).get()
+            .then(({_document}) => (
+                _document ? 
+                Promise.reject({messages: ['user exists!']}) :
+                db.collection('users').doc(userName).set(user)
+                )
+            )
+            .then((res) => console.log(res))
+            .catch(err => cb(err))
+        // return db.collection('users')
+        // .add({
+        //     ...user,
+        //     loggedIn : true
+        // })
+        // .then(res => {
+        //     cb(null, res.id);
+        // })
     }
 }
 
