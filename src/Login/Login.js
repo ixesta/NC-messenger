@@ -4,27 +4,34 @@ import * as api from '../api';
 
 class Login extends React.Component {
   state = {
-    userName: '',
-    password: '',
+    newUserName: '',
+    newPassword: '',
   }
   render() {
-    return (<form>
-      <input placeholder='username' onChange={this.handleUsername} value={this.state.userName} />
+    return (<form onSubmit={this.handleSubmit}>
+      <input placeholder='username' onChange={this.handleUsername} value={this.state.newUserName} />
       <br />
-      <input placeholder='password' onChange={this.handlePassword} value={this.state.password} />
-      <button type='Submit' onClick={this.props.changeLogStatus}>Login</button>
+      <input placeholder='password' onChange={this.handlePassword} value={this.state.newPassword} />
+      <button type='submit'>Login</button>
     </form >)
   }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.changeLogStatus(this.state.newUserName, this.state.newPassword)
+    this.setState({ newUserName: '', newPassword: '' })
+  }
+
   handleUsername = (event) => {
     event.preventDefault();
-    let userName = event.target.value;
-    this.setState({ userName })
+    let newUserName = event.target.value;
+    this.setState({ newUserName })
   }
 
   handlePassword = (event) => {
     event.preventDefault();
-    let password = event.target.value;
-    this.setState({ password })
+    let newPassword = event.target.value;
+    this.setState({ newPassword })
   }
 
 

@@ -62,11 +62,9 @@ export const createUser = (user, cb) => {
     }
 }
 
-export const login = ({ userName, password, loggedIn }, cb) => {
+export const login = ({ userName, password }, cb) => {
     let errors = [];
-    if (loggedIn) {
-        errors.push('You are already logged in')
-    }
+    console.log(userName, password, 'LOGIN')
     if (!userName || typeof userName !== 'string') {
         errors.push('You must provide a details object with a userName')
     }

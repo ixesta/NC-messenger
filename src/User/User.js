@@ -8,7 +8,7 @@ import * as api from '../api';
 const User = ({ changeLogStatus }) => (
   <div>
     <Register />
-    <Login changeLogStatus={this.changeLogStatus} />
+    <Login changeLogStatus={changeLogStatus} />
     {/* {loggedIn && (<Logout />)} */}
   </div>
 )

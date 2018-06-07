@@ -10,8 +10,7 @@ import User from './User/User';
 class App extends Component {
 
     state = {
-        userName: '',
-        loggedIn: false
+        userName: ''
     }
 
     render() {
@@ -22,13 +21,11 @@ class App extends Component {
             </div>
         )
     }
-    changeLogStatus = (event) => {
-        event.preventDefault();
+    changeLogStatus = (newUser, newPassword) => {
         api.login({
-            userName: this.state.userName,
-            password: this.state.password,
-            loggedIn: this.props.loggedIn
-        }, (error) => error ? alert(error.messages) : this.setState({ userName: '', password: '' }));
+            userName: newUser,
+            password: newPassword
+        }, (error) => { error ? alert(error.messages) : this.setState({ userName: newUser }) });
     }
 
 }
