@@ -17,14 +17,19 @@ export const listenToUsers = cb => {
 }
 
 export const postMessage = (message, cb) => {
-    const { text, timestamp } = message
+    const { text, timestamp, userName } = message
+    console.log('postMessage username', typeof userName)
     let errors = []
+    if (!userName || typeof userName !== 'string') {
+        errors.push('You must have a valid username');
+    }
     if (!text || typeof text !== 'string') {
         errors.push('You must have a string text property on your message');
     }
     if (!timestamp || typeof timestamp !== 'string') {
         errors.push('You must have a string timestamp property on your message - use moment().format()');
     }
+    if (errors.length) return cb({ messages: errors })
     return db.collection('messages')
         .add(message)
         .then(res => {
@@ -57,8 +62,11 @@ export const createUser = (user, cb) => {
     }
 }
 
-export const login = ({ userName, password }, cb) => {
+export const login = ({ userName, password, loggedIn }, cb) => {
     let errors = [];
+    if (loggedIn) {
+        errors.push('You are already logged in')
+    }
     if (!userName || typeof userName !== 'string') {
         errors.push('You must provide a details object with a userName')
     }

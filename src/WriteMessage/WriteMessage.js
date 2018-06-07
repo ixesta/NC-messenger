@@ -4,8 +4,7 @@ import moment from 'moment';
 
 class WriteMessage extends React.Component {
   state = {
-    value: '',
-    userName: ''
+    value: ''
   }
   render() {
     return (<form>
@@ -15,12 +14,13 @@ class WriteMessage extends React.Component {
   }
 
   sendMessage = (event) => {
+    event.preventDefault();
     api.postMessage({
       userName: this.props.userName,
       text: this.state.value,
       timestamp: moment().format()
 
-    }, (error) => error ? alert(error.message) : this.setState({ value: '' }));
+    }, (error) => error ? alert(error.messages) : this.setState({ value: '' }));
   }
 
   handleInput = (event) => {

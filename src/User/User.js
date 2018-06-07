@@ -1,21 +1,17 @@
 import React from 'react';
+import Register from '../Register/Register';
+import Login from '../Login/Login';
+import Logout from '../Logout/Logout';
+import * as api from '../api';
 
 
+const User = ({ changeLogStatus }) => (
+  <div>
+    <Register />
+    <Login changeLogStatus={this.changeLogStatus} />
+    {/* {loggedIn && (<Logout />)} */}
+  </div>
+)
 
-class User extends React.Component {
-
-
-  componentDidMount() {
-    api.listenToUsers(updatedUsers => {
-      let newUsers = { ...this.state.users };
-      updatedUsers.forEach(({ message, user }) => {
-        newUsers = { ...newUsers, [user.userName]: user }
-      })
-      this.setState({ users: newUsers })
-    })
-
-
-  }
-}
 
 export default User;
