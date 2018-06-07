@@ -1,34 +1,27 @@
 import React, { Component } from 'react';
 import { db } from './config';
 import * as api from './api';
-import moment from 'moment'
+import moment from 'moment';
+import WriteMessage from './WriteMessage/WriteMessage';
+import Display from './Display/Display';
+import Messages from './Messages/Messages';
 
 class App extends Component {
 
     state = {
-
+        userName: {
+            name: ''
+        }
     }
-
-    componentDidMount() {
-        api.listenToUsers(updatedUsers => {
-            let newUsers = { ...this.state.users };
-            updatedUsers.forEach(({ message, user }) => {
-                newUsers = { ...newUsers, [user.userName]: user }
-            })
-            this.setState({ users: newUsers })
-        })
-
-        api.listenForNewMessages(newMessages => {
-            this.setState({
-                messages: [...this.state.messages, ...newMessages]
-            })
-        });
-    }
-
 
     render() {
-        return <div>Hi</div>
+        return (
+            <div>
+                <Messages userName={this.state.userName.name} />
+            </div>
+        )
     }
+
 }
 
 export default App;
