@@ -52,7 +52,7 @@ export const createUser = (user, cb) => {
                 db.collection('users').doc(userName).set({...user, loggedIn: true})
                 )
             )
-            .then((res) => cb(null, userName))
+            .then((res) => cb(null, {userName, loggedIn: true}))
             .catch(err => cb(err))
     }
 }
@@ -75,7 +75,7 @@ export const login =  ({userName, password}, cb) => {
                 db.collection('users').doc(userName).update({loggedIn : true}) :
                 Promise.reject({messages: 'incorrect password'})
     })
-    .then(() => cb(null, userName))
+    .then(() => cb(null, {userName, loggedIn: true}))
     .catch(err => cb(err))
        
 }
@@ -87,7 +87,7 @@ export function logout (userName, cb) {
     .then(doc => {
         !doc.exists ? 
             cb(err) :
-            db.collection('users').doc(userName).update({loggedIn: false}) && cb(null)
+            db.collection('users').doc(userName).update({loggedIn: false}) && cb(null, {userName, loggedIn: false})
     })
 }
 
