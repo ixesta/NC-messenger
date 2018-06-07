@@ -25,16 +25,18 @@ API methods:
 //This posts a new message to the collection. The message should be an object with the agreed properties. If a message is passed in with incorrect properties, you callback will be invoked with an error message detailing these. When the message is successfully added, the callback function will be invoked with an id representing the new message's place in the collection.
 
 .listenToUsers((userEvent) => {})
-//This establishes a listener in the users collection. Every time a new user is detected (including the first time this function is called), the callback function will be invoked with a 'new users' message and an array of the users (even if it is just one). Every time a user's loggedIn status changes, the callback function will be invoked with a 'user status change' message and the user whose status has changed.
+//This establishes a listener in the users collection. Every time a new user is detected (including the first time this function is called), the callback function will be invoked, sending back an array of objects with two properties. The first is the 'user' property, which contains the user's data (currently just loggedIn and userName, but you can add more!) and the second is a message relating to what the change was. 
 
-.createUser(user, (err, userId) => {})
-//This posts a new user to the collection. If a user is passed in with incorrect properties, you callback will be invoked with an error message detailing these. The userName property cannot already exist on the database and in this case it will invoke the callback with an error; if a user is successfully added, the callback will be invoked with details of the new user, including their id, and their loggedIn property set to true (so there is no need to call the login function).
+// There are two types of change you're likely to encounter - 'added', when a user was added to the collection (and is therefore logged in) and 'modified', when a user's loggedIn status has changed in some way. You will have to treat these different, and it is reasonably challenging to handle users logging in/out efficiently!
 
-.login(details, password, (err, user) => {})
-//This takes a details object with a username and password string properties and finds a user that matches these details. The error first callback will be invoked with the error if it is an invalid combination, or will return the user, with loggedIn set to true, if the login succeeds.
+.createUser(user, (err, {userName, loggedIn}) => {})
+//This posts a new user to the collection. If a user is passed in with incorrect properties, you callback will be invoked with an error message detailing these. The userName property cannot already exist on the database and in this case it will invoke the callback with an error; if a user is successfully added, the callback will be invoked with a user object containing the userName and loggedIn property (which will be set to true).
 
-.logout(userId, (err) => {})
-//This takes a userId and sets their loggedIn status to false. It will only invoke the callback if passed an invalid id.
+.login({userName, password}, (err, {userName, loggedIn}) => {})
+//This takes a details object with a username and password string properties and finds a user that matches these details. The error first callback will be invoked with the error if it is an invalid combination. If it succeeds, it will be invoked with a user object containing the userName and loggedIn property (which will be set to true).
+
+.logout(userId, (err, {userName, loggedIn}) => {})
+//This takes a userId and sets their loggedIn status to false. If anything goes wrong, the cb will be invoked with an error. Otherwise, it will be invokved with a user object containing the userName and loggedIn property (which will be set to false).
 ```
 
 As you always should with React, create your static layout first. Draw out your components, and make decisions about where to listen for data and set it to state.
