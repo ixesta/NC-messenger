@@ -1,5 +1,5 @@
 import React from 'react';
-import * as api from '../api';
+// import * as api from '../api';
 
 
 class Login extends React.Component {
@@ -11,14 +11,14 @@ class Login extends React.Component {
     return (<form onSubmit={this.handleSubmit}>
       <input placeholder='username' onChange={this.handleUsername} value={this.state.newUserName} />
       <br />
-      <input placeholder='password' onChange={this.handlePassword} value={this.state.newPassword} />
+      <input type='password' placeholder='password' onChange={this.handlePassword} value={this.state.newPassword} />
       <button type='submit'>Login</button>
     </form >)
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.changeLogStatus(this.state.newUserName, this.state.newPassword)
+    this.props.logIn(this.state.newUserName, this.state.newPassword)
     this.setState({ newUserName: '', newPassword: '' })
   }
 

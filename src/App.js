@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { db } from './config';
+// import { db } from './config';
+import './App.css'
 import * as api from './api';
-import moment from 'moment';
-import WriteMessage from './WriteMessage/WriteMessage';
-import Display from './Display/Display';
 import Messages from './Messages/Messages';
 import User from './User/User';
 
@@ -15,17 +13,22 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                <Messages userName={this.state.userName} />
-                <User changeLogStatus={this.changeLogStatus} />
+            <div className='App'>
+                {this.state.userName ? <Messages userName={this.state.userName} /> : 'Please log in to see messages'}
+                <User logIn={this.logIn} logOut={this.logOut} userName={this.state.userName}/>
             </div>
         )
     }
-    changeLogStatus = (newUser, newPassword) => {
+    logIn = (newUser, newPassword) => {
         api.login({
             userName: newUser,
             password: newPassword
         }, (error) => { error ? alert(error.messages) : this.setState({ userName: newUser }) });
+    }
+
+    logOut = () => {
+        api.logout(this.state.userName,
+        (error) => { error ? alert(error.messages) : this.setState({ userName: '' }) });
     }
 
 }

@@ -1,0 +1,14 @@
+.App {
+  background-image: url('spider.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: whitesmoke;
+  font-size: 1.25em;
+  display: flex;
+
+}
+
+.user {
+  text-align: right;
+}

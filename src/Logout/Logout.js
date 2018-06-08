@@ -4,8 +4,13 @@ class Logout extends React.Component {
 
   render() {
     return (
-      <button type='Submit' onClick={this.changeLogStatus}>Logout</button>
+      <button onClick={this.handleSubmit}>Logout</button>
     )
+  }
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.logOut()
+    
   }
 }
 
