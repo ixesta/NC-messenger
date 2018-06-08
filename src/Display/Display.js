@@ -16,7 +16,8 @@ class Display extends React.Component {
     });
   }
   render() {
-    return (<div>{this.state.messages.map(message => <p>{message.text}</p>)}</div>)
+    console.log(this.state.messages, 'MESSAGES')
+    return (<div>{this.state.messages.sort((a, b) => a.timestamp - b.timestamp).map(((message, id) => <p key={message.id}>{message.text} from {message.userName}</p>))}</div>)
   }
 
 

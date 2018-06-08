@@ -18,7 +18,7 @@ class WriteMessage extends React.Component {
     api.postMessage({
       userName: this.props.userName,
       text: this.state.value,
-      timestamp: moment().format()
+      timestamp: +(moment().format('X'))
 
     }, (error) => error ? alert(error.messages) : this.setState({ value: '' }));
   }

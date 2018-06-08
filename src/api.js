@@ -26,8 +26,8 @@ export const postMessage = (message, cb) => {
     if (!text || typeof text !== 'string') {
         errors.push('You must have a string text property on your message');
     }
-    if (!timestamp || typeof timestamp !== 'string') {
-        errors.push('You must have a string timestamp property on your message - use moment().format()');
+    if (!timestamp || typeof timestamp !== 'number') {
+        errors.push('You must have a number timestamp property on your message - use +moment().format()');
     }
     if (errors.length) return cb({ messages: errors })
     return db.collection('messages')
