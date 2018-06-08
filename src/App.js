@@ -16,8 +16,12 @@ class App extends Component {
     render() {
         return (
             <div className='App'>
-                {this.state.userName ? <div><UserList/> <Messages userName={this.state.userName} /> </div>: 'Please log in to see messages'}
-                <User logIn={this.logIn} logOut={this.logOut} userName={this.state.userName}/>
+                                <User logIn={this.logIn} logOut={this.logOut} userName={this.state.userName}/>
+
+                {this.state.userName ? <div className='flex-container'>
+                    <div id='userlist'><UserList/></div>
+                    <div id='messages'><Messages userName={this.state.userName} /> </div>
+                    </div>: 'Please log in to see messages'}
             </div>
         )
     }

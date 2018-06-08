@@ -4,7 +4,7 @@ class Logout extends React.Component {
 
   render() {
     return (
-      <button onClick={this.handleSubmit}>Logout</button>
+      <button className='button' id='logout' onClick={this.handleSubmit}>Logout</button>
     )
   }
   handleSubmit = e => {

@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
 .App {
   background-image: url('spider.jpg');
   background-position: center;
@@ -5,10 +8,64 @@
   background-size: cover;
   color: whitesmoke;
   font-size: 1.25em;
-  display: flex;
+  padding-top: 50px;
+  padding-right: 80px;
+  padding-bottom: 50px;
+  padding-left: 80px;
+  font-family: 'Montserrat', sans-serif;
 
+}
+.flex-container{
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 0;
+  
 }
 
 .user {
   text-align: right;
+}
+
+#userlist {
+order:1;
+text-align: left;
+line-height: 0.2em;
+position: fixed;
+top: 0;
+right: 0;
+padding-right: 3em;
+padding-top: 5em;
+
+}
+
+#messages {
+  order:2;
+  text-align: left;
+}
+
+.button {
+  background-color: black;
+  border: groove;
+  text-align: center;
+  color: whitesmoke;
+  font-size: 1em;
+  /* position: fixed; */
+  border-radius: 10%;
+}
+
+input{
+  width: 10em;
+  height: 100%;
+  margin: 0.3em;
+  background-color:black;
+  color: whitesmoke;
+  line-height: 1em;
+  /* padding: 1em 1em; */
+  font-size: 0.9em;
+
+}
+
+#logout{
+  display: block;
+  float: right;
 }

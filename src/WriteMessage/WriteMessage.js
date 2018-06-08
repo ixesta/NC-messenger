@@ -9,7 +9,7 @@ class WriteMessage extends React.Component {
   render() {
     return (<form>
       <input onChange={this.handleInput} value={this.state.value} />
-      <button type='Submit' onClick={this.sendMessage}>Submit your happy message here</button>
+      <button className='button' type='Submit' onClick={this.sendMessage}>Submit your happy message here</button>
     </form>)
   }
 

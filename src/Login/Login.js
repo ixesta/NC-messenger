@@ -9,10 +9,10 @@ class Login extends React.Component {
   }
   render() {
     return (<form onSubmit={this.handleSubmit}>
+          <button className='button' type='submit'>Login</button>
+          <br />
       <input placeholder='username' onChange={this.handleUsername} value={this.state.newUserName} />
-      <br />
       <input type='password' placeholder='password' onChange={this.handlePassword} value={this.state.newPassword} />
-      <button type='submit'>Login</button>
     </form >)
   }
 

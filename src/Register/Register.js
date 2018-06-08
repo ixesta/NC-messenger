@@ -10,10 +10,10 @@ class Register extends React.Component {
   }
   render() {
     return (<form>
+            <button className='button' type='Submit' onClick={this.sendUserInfo}>Register</button>
+            <br/>
       <input placeholder='username' onChange={this.handleUsername} value={this.state.userName} />
-      <br />
       <input placeholder='password' onChange={this.handlePassword} value={this.state.password} />
-      <button type='Submit' onClick={this.sendUserInfo}>Register</button>
     </form >)
   }
 

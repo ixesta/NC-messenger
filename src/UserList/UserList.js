@@ -25,7 +25,8 @@ render() {
     userArray.push([key])
   }
   return (<div>
-    {userArray.map(user => <p>{user}</p>)}
+    <h2>Userlist</h2>
+    {userArray.map((user, i) => <p key={i}>{user}</p>)}
   </div>)
 }
 }
